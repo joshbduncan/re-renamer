@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cdir=$(pwd)
+app=$(basename $cdir)
+
+cleanup() {
+    # lint app using black and flake8
+    echo "🧾 linting $app..."
+    source venv/bin/activate
+    isort src tests
+    black src tests
+    flake8 src tests
+    ruff src tests
+    echo "🧾 type checking $app..."
+    mypy src tests
+    echo "🧾 running pyupgrade..."
+    pyupgrade --py310-plus -- */*/*.py
+}
+
+tests() {
+    # test app using pytest
+    echo "🧾 testing $app..."
+    source venv/bin/activate
+    pytest -vv --cov-report term-missing
+}
+
+help() {
+  printf "%s <task> [args]\n\nTasks:\n" "${0}"
+
+  compgen -A function | grep -v "^_" | cat -n
+
+  printf "\nExtended help:\n  Each task has comments for general usage\n"
+}
+
+TIMEFORMAT=$'\nTask completed in %3lR'
+time "${@:-help}"
