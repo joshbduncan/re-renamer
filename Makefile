@@ -34,7 +34,7 @@ type-check: ## type check the app using mypy
 	$(BIN)/mypy src tests
 
 test: ## test the app using pytest
-	$(BIN)/pytest -vv --cov-report term-missing
+	$(BIN)/pytest -v --cov-report term-missing
 
 ##@ Build
 build: cleanup ## build the app package

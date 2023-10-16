@@ -110,12 +110,26 @@ class PathRow:
 
     def update_row(self) -> None:
         """Update a table tow with new information."""
-        self.parent.update_cell(self.row_key, "icon", self.icon, update_width=False)
-        self.parent.update_cell(
-            self.row_key, "current_name", self.path.name, update_width=True
+        self.parent.call_after_refresh(
+            self.parent.update_cell,
+            self.row_key,
+            "icon",
+            self.icon,
+            update_width=True,
         )
-        self.parent.update_cell(
-            self.row_key, "new_name", self.new_name_pretty, update_width=True
+        self.parent.call_after_refresh(
+            self.parent.update_cell,
+            self.row_key,
+            "current_name",
+            self.path.name,
+            update_width=True,
+        )
+        self.parent.call_after_refresh(
+            self.parent.update_cell,
+            self.row_key,
+            "new_name",
+            self.new_name_pretty,
+            update_width=True,
         )
 
     @property

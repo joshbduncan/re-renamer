@@ -6,8 +6,6 @@ The format is based on [TODO.md](https://github.com/todomd/todo.md)
 
 ### Todo
 
-- [ ] remove test actions from log
-
 ### Doing
 
 ### Done

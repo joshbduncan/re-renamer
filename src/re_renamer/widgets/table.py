@@ -41,7 +41,6 @@ class Table(DataTable):  # type: ignore[type-arg]
     def load_columns(self) -> None:
         self.cursor_type = "row"
         for key, label, width in self.column_headers:
-            print(f"{label=}")
             self.add_column(label, width=width, key=key)
 
     def load_paths_in_table(self, paths) -> dict[RowKey, PathRow]:

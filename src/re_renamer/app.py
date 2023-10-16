@@ -34,7 +34,7 @@ class REnamer(App[int]):
         Binding("ctrl+l", "show_log", "Show Log", show=True),
     ]
 
-    find = reactive("", init=False, always_update=False)
+    find: reactive[str] = reactive("", init=False, always_update=False)
     replace: reactive[str] = reactive("", init=False, always_update=False)
     case_sensitive: reactive[bool] = reactive(False, init=False, always_update=False)
     first_match: reactive[bool] = reactive(False, init=False, always_update=False)

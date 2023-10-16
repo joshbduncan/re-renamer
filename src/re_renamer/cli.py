@@ -68,11 +68,11 @@ def parse_args(argv: Sequence[str] | None = None) -> Namespace:
 
 def parse_paths(paths: list[str] | TextIOWrapper) -> list[Path]:
     if isinstance(paths, list):
-        return [Path(path) for path in paths]
+        return sorted([Path(path) for path in paths])
     elif not sys.stdin.isatty():
         # disable interactive tty which can be confusing
         # but still process info piped in from the shell
-        return [Path(path.strip()) for path in paths.readlines()]
+        return sorted([Path(path.strip()) for path in paths.readlines()])
     return []
 
 
