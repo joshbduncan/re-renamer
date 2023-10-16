@@ -18,8 +18,10 @@ class ValidFindRegex(Validator):
         """Check if `value` is a valid regular expression."""
         try:
             re.compile(value)
+            print(f"Valid FIND regex. {value=}")
             return self.success()
         except re.error as e:
+            print(f"Invalid FIND regex. {value=}, {e.msg=}")
             return self.failure(e.msg)
 
 
@@ -31,9 +33,12 @@ class ValidSubstitutionRegex(Validator):
         try:
             regex = re.compile(find)
             regex.sub(value, "")
+            print(f"Valid REPLACE regex. {value=}")
             return self.success()
         except (re.error, IndexError) as e:
-            return self.failure(e.msg if hasattr(e, "msg") else str(e))
+            err = e.msg if hasattr(e, "msg") else str(e)
+            print(f"Invalid REPLACE regex. {value=}, {err=}")
+            return self.failure(err)
 
 
 class Inputs(Grid):
@@ -45,11 +50,11 @@ class Inputs(Grid):
         super().__init__(*args, **kwargs)
 
     class RegexInputChanged(Message):
-        """Sent when a row (path) is removed."""
+        """Sent when either FIND or REPLACE inputs are changed."""
 
-        def __init__(self, input: Input, value: str) -> None:
-            self.input = input
-            self.value = value
+        def __init__(self, find: str, replace: str) -> None:
+            self.find = find
+            self.replace = replace
             super().__init__()
 
     def compose(self) -> ComposeResult:
@@ -82,9 +87,6 @@ class Inputs(Grid):
         )
         find.set_class(not find_validation.is_valid, "-invalid")
         find.set_class(find_validation.is_valid, "-valid")
-        self.post_message(
-            self.RegexInputChanged(find, find.value if find_validation.is_valid else "")
-        )
 
         replace = self.query_one("#replace", Input)
         replace_validation = ValidSubstitutionRegex().validate(
@@ -97,9 +99,11 @@ class Inputs(Grid):
         )
         replace.set_class(not replace_validation.is_valid, "-invalid")
         replace.set_class(replace_validation.is_valid, "-valid")
+
         self.post_message(
             self.RegexInputChanged(
-                replace, replace.value if replace_validation.is_valid else ""
+                find.value if find_validation.is_valid else "",
+                replace.value if replace_validation.is_valid else "",
             )
         )
 

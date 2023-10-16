@@ -201,10 +201,14 @@ class REnamer(App[int]):
 
     @on(Inputs.RegexInputChanged)
     def update_regex_strings(self, message: Inputs.RegexInputChanged) -> None:
-        if message.input.id == "find":
-            self.find = message.value
-        elif message.input.id == "replace":
-            self.replace = message.value
+        find = message.find
+        replace = message.replace
+        self.log(f"Updating regex reactive properties. {find=}, {replace=}")
+        if not replace:
+            self.replace = replace
+        self.find = find
+        if replace:
+            self.replace = replace
 
     # ***** DATA TABLE ACTIONS *****
 

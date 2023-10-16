@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Display bug when updating paths in table
+- Regex error when using input history
 
 ## [0.1.0] - 2023-10-12
 
